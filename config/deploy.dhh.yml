@@ -15,7 +15,8 @@ env:
   clear:
     ARTENANT: test
 
-proxy: false
+proxy:
+  ssl: false
 
 x-beamer-accessory: &beamer-accessory
   image: basecamp/beamer
