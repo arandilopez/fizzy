@@ -2,6 +2,8 @@ servers:
   web:
     hosts:
       - test-1
+      - test-2
+      - test-3
   jobs:
     hosts:
       - test-1
