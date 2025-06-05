@@ -13,6 +13,7 @@ export default class extends Controller {
 
   sliderChanged({ target }) {
     this.#index = target.value
+    this.#value = target.value
   }
 
   set #index(index) {
