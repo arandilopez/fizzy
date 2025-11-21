@@ -29,7 +29,7 @@
     overflow-y: hidden;
     padding-block-end: var(--column-width-collapsed);
     position: relative;
-    scrollbar-width: none; /* Hide x-scrollbar on FF */
+    /* scrollbar-width: none; Hide x-scrollbar on FF */
 
     /* Hide x-scrollbar on Chrome/Safari/Opera */
     &::-webkit-scrollbar {
@@ -45,8 +45,16 @@
       min-block-size: 20lh;
     }
 
-    @media (max-width: 519px) {
+    /* @media (max-width: 519px) {
       display: none;
+    } */
+
+    @media (max-width: 519px) {
+      --column-gap: 0px;
+      --column-padding-expanded: 0.8rem;
+      --column-width-expanded: 85vw;
+      overflow: auto;
+      scroll-snap-type: inline mandatory;
     }
   }
 
@@ -75,7 +83,7 @@
 
     inline-size: var(--column-width-expanded);
     position: relative;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
 
     &.is-collapsed {
       inline-size: var(--column-width-collapsed);
