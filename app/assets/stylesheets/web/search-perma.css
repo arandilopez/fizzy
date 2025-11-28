@@ -1,0 +1,23 @@
+@layer components {
+  .search-perma {
+    margin-block-start: var(--block-space);
+
+    .search__form > label,
+    .search__reset {
+      display: none;
+    }
+
+    .search__input {
+      --input-padding: 0.5em 0.1em;
+      text-align: center;
+
+      &:focus-visible {
+        text-align: start;
+      }
+    }
+
+    .search {
+      padding-inline: var(--block-space);
+    }
+  }
+}
