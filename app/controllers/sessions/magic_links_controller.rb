@@ -28,24 +28,23 @@ class Sessions::MagicLinksController < ApplicationController
       end
     end
 
-    def authenticate_with(magic_link)
-      if email_address_pending_authentication_matches?(magic_link.identity.email_address)
-        redirect_to after_sign_in_url(magic_link)
-      else
-        redirect_to new_session_path, alert: "Authentication failed. Please try again."
-      end
-    end
-
     def code
       params.expect(:code)
     end
 
     def respond_to_valid_code_from(magic_link)
-      start_new_session_for magic_link.identity
+      if email_address_pending_authentication_matches?(magic_link.identity.email_address)
+        start_new_session_for magic_link.identity
 
-      respond_to do |format|
-        format.html { authenticate_with magic_link }
-        format.json { render json: { session_token: cookies[:session_token] } }
+        respond_to do |format|
+          format.html { redirect_to after_sign_in_url(magic_link) }
+          format.json { render json: { session_token: cookies[:session_token] } }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to new_session_path, alert: "Authentication failed. Please try again." }
+          format.json { render json: { message: "Authentication failed. Please try again." }, status: :unauthorized }
+        end
       end
     end
 
