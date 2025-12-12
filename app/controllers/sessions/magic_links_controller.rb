@@ -20,7 +20,11 @@ class Sessions::MagicLinksController < ApplicationController
   private
     def ensure_that_email_address_pending_authentication_exists
       unless email_address_pending_authentication.present?
-        redirect_to new_session_path, alert: "Enter your email address to sign in."
+        alert_message = "Enter your email address to sign in."
+        respond_to do |format|
+          format.html { redirect_to new_session_path, alert: alert_message }
+          format.json { render json: { message: alert_message }, status: :unauthorized }
+        end
       end
     end
 
