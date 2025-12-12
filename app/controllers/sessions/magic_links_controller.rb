@@ -26,7 +26,6 @@ class Sessions::MagicLinksController < ApplicationController
 
     def authenticate_with(magic_link)
       if email_address_pending_authentication_matches?(magic_link.identity.email_address)
-        start_new_session_for magic_link.identity
         redirect_to after_sign_in_url(magic_link)
       else
         redirect_to new_session_path, alert: "Authentication failed. Please try again."
