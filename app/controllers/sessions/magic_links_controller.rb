@@ -41,9 +41,10 @@ class Sessions::MagicLinksController < ApplicationController
           format.json { render json: { session_token: cookies[:session_token] } }
         end
       else
+        alert_message = "Authentication failed. Please try again."
         respond_to do |format|
-          format.html { redirect_to new_session_path, alert: "Authentication failed. Please try again." }
-          format.json { render json: { message: "Authentication failed. Please try again." }, status: :unauthorized }
+          format.html { redirect_to new_session_path, alert: alert_message }
+          format.json { render json: { message: alert_message }, status: :unauthorized }
         end
       end
     end
