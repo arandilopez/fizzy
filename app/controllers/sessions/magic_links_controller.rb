@@ -41,13 +41,8 @@ class Sessions::MagicLinksController < ApplicationController
       start_new_session_for magic_link.identity
 
       respond_to do |format|
-        format.html do
-          authenticate_with magic_link
-        end
-
-        format.json do
-          render json: { session_token: cookies[:session_token] }
-        end
+        format.html { authenticate_with magic_link }
+        format.json { render json: { session_token: cookies[:session_token] } }
       end
     end
 
