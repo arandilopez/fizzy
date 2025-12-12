@@ -9,25 +9,25 @@ class SessionsController < ApplicationController
   end
 
   def create
+    if magic_link = magic_link_from_sign_in_or_sign_up
+      serve_development_magic_link magic_link
+
+      respond_to do |format|
+        format.html { redirect_to_session_magic_link magic_link }
+        format.json { head :created }
+      end
+    else
+      head :unprocessable_entity
+    end
+  end
+
+  def magic_link_from_sign_in_or_sign_up
     if identity = Identity.find_by_email_address(email_address)
-      magic_link = identity.send_magic_link
+      identity.send_magic_link
     else
       signup = Signup.new(email_address: email_address)
       if signup.valid?(:identity_creation)
-        magic_link = signup.create_identity if Account.accepting_signups?
-        redirect_to_session_magic_link magic_link
-      else
-        head :unprocessable_entity
-        return
-      end
-    end
-
-    serve_development_magic_link magic_link
-
-    respond_to do |format|
-      format.html { redirect_to_session_magic_link magic_link }
-      format.json do
-        head :created
+        signup.create_identity if Account.accepting_signups?
       end
     end
   end
